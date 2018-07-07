@@ -30,7 +30,7 @@ class Enemy {
 
 // Draw the enemy on the screen, required method for game
 	render() {
-    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+    	ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 	}
 
 }
@@ -67,6 +67,8 @@ class Player {
 	}
 	render() {
 		ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+		ctx.font = '30px cursive';
+  		ctx.fillText("Level " + this.level, 10, 40);
 	}
 	handleInput(keyCode) {
 		switch (keyCode) {
@@ -99,7 +101,8 @@ class Player {
 		setTimeout(function() {
 			thisPlayer.moveToStart();
 			thisPlayer.won = false;
-			thisPlayer.level ++;				
+			thisPlayer.level ++;	
+			updateLevel(thisPlayer.level);
 		}, 500);		
 		
 	}
@@ -114,7 +117,7 @@ class Player {
 		setTimeout(function() {
 			thisPlayer.moveToStart();
 			thisPlayer.lifes = 1;
-			thisPlayer.level = 1;				
+			thisPlayer.level = 1;
 		}, 500);	
 	}
 }
