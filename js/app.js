@@ -5,25 +5,33 @@ class Enemy {
 
     // The image/sprite for our enemies, this uses
     // a helper we've provided to easily load images
-  constructor() {
+  constructor(y) {
 		this.sprite = 'images/enemy-bug.png';
-		//TODO
+		this.x = -500 * Math.random();
+		this.y = y;
+		this.speed = 0.7 + Math.random()*(0.5);
+		this.level = 1;
 	}  
 	
-
-
 	// Update the enemy's position, required method for game
 	// Parameter: dt, a time delta between ticks
 	update(dt) {
     // You should multiply any movement by the dt parameter
     // which will ensure the game runs at the same speed for
-    // all computers.
+    // all computers.		
+			this.x = this.x + 100 * this.speed * this.level * dt;
+		  if (this.x > 500) {
+				allEnemies.push(new Enemy(this.y));
+				allEnemies.splice(allEnemies.indexOf(this),1);
+			}
+		
 	}
 
 // Draw the enemy on the screen, required method for game
 	render() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 	}
+
 }
 
 // Now write your own player class
@@ -40,7 +48,6 @@ class Player {
 		//TODO
 	}
 	render() {
-		//TODO
 		ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 	}
 	handleInput(keyCode) {
@@ -65,7 +72,7 @@ class Player {
 // Now instantiate your objects.
 // Place all enemy objects in an array called allEnemies
 // Place the player object in a variable called player
-let allEnemies = [new Enemy(), new Enemy()]; //TODO
+let allEnemies = [new Enemy(65), new Enemy(148), new Enemy(230)]; //TODO
 let player = new Player();
 
 
