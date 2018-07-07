@@ -6,7 +6,7 @@ class Enemy {
     // The image/sprite for our enemies, this uses
     // a helper we've provided to easily load images
   constructor() {
-		this.rows = [63, 146, 229];
+		this.rows = [58, 141, 224];
 		this.sprite = 'images/enemy-bug.png';
 		this.x = random(-300, -100);
 		this.y = this.rows[random(0, 2)];
@@ -44,6 +44,11 @@ class Player {
 		this.moveToStart();
 		this.level = 1;
 		this.lifes = 3;
+		this.message = {
+			has: true,
+			text: "Start"
+		};
+		this.block = true;
 	}
 	update() {
 		//meeting with enemie scenario
@@ -52,24 +57,25 @@ class Player {
 			
 			if (		(enemie.x >= this.x - 50) 
 				  && 	(enemie.x <= this.x + 60) 
-				  && 	(enemie.y + 5 == this.y)
-				  &&	!this.failed) {
-				this.failed = true;
+				  && 	(enemie.y  == this.y)
+				  &&	!this.block) {
+				
 				this.fail();
 			}
 		}
 		
 		//win scenario
-		if (this.y < 0 && !this.won) {	
-			this.won = true;
-			this.win();
-					
+		if (this.y < 0 && !this.block) {
+			this.win();					
 		}
 		
 	}
 	render() {
+		//render player
 		ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
-		ctx.font = '30px cursive';
+		
+		//render lifes
+		ctx.font = 'bold 32px Iceland';
   		ctx.fillText("Level " + this.level, 10, 40);
 		
 		let i = this.lifes, 
@@ -77,11 +83,17 @@ class Player {
 		while(i > 0) {
 			ctx.drawImage(Resources.get(this.lifeSprite), x, 0, 101/3, 171/3);
 			x -= 35;
-			i--;
+			i--;		
+		}
+		
+		//render messages
+		if(this.message.has) {
+			this.block = true;
+			this.showMessage();
 		}
 	}
 	handleInput(keyCode) {
-		if (!(this.failed || this.won)) {				
+		if (!this.block) {				
 			switch (keyCode) {
 				case "up":
 					this.y = this.y > 0 ? this.y - 83 : this.y;
@@ -101,56 +113,79 @@ class Player {
 	
 	moveToStart() {		
 		this.x = 202;
-		this.y = 400;
+		this.y = 390;
 	}
 
-	win() {		
-		setTimeout(function() {
-				alert("WIN!!!!");	
-				
-		}, 100);
+	win() {	
+		this.block = true;
 		let thisPlayer = this;
+		
+		setTimeout(function() {
+			thisPlayer.message.has = true,
+			thisPlayer.message.text = "Next level!";				
+		}, 0);
+		
 		setTimeout(function() {
 			thisPlayer.moveToStart();
-			thisPlayer.won = false;
 			thisPlayer.level ++;	
 			if(thisPlayer.level % 5 == 0) {
 				thisPlayer.lifes ++;
-				alert("You get one more life!")
+				thisPlayer.message.has = true,
+				thisPlayer.message.text = "+ life";
 			} 
-		}, 500);		
+		}, 0);		
 		
 	}
 	
 	fail() {
 		
-		
+		this.block = true;
 		let thisPlayer = this;
 		
-		if (this.lifes > 0) {
+		if (this.lifes > 1) {
 			//loose life
 			setTimeout(function() {
-					alert("Life lost!!!!");					
-			}, 100);
+				thisPlayer.message.has = true,
+				thisPlayer.message.text = "Life lost!!!!";					
+			}, 0);
 			
 			setTimeout(function() {
 				thisPlayer.lifes --;
 				thisPlayer.moveToStart();
-				thisPlayer.failed = false;
-			}, 500);	
+			}, 0);	
 		} else {
 			//loose game and start again
 			setTimeout(function() {
-					alert("FAIL!!!!");					
-			}, 100);
+				thisPlayer.message.has = true,
+				thisPlayer.message.text = "Game Over";				
+			}, 0);
 			
 			setTimeout(function() {
 				thisPlayer.moveToStart();
 				thisPlayer.lifes = 3;
 				thisPlayer.level = 1;
-				thisPlayer.failed = false;
-			}, 500);	
+				thisPlayer.message.has = true,
+				thisPlayer.message.text = "New Game";	
+			}, 0);	
 		}
+	}
+	
+	showMessage() {
+		ctx.fillStyle = "red";
+		ctx.fillRect(123, 198, 254, 204);
+		ctx.fillStyle = "yellow";
+		ctx.fillRect(125, 200, 250, 200);
+		ctx.textAlign = "center";
+		ctx.fillStyle = "black";
+		ctx.fillText(this.message.text, 250, 300);
+		
+		let thisPlayer = this;
+		setTimeout(function() {
+			thisPlayer.message.has = false;
+			thisPlayer.message.text = "";
+			thisPlayer.block = false;
+		}, 1000);
+		ctx.textAlign = "left";
 	}
 }
 
