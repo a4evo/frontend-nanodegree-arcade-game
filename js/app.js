@@ -9,7 +9,7 @@ class Enemy {
 		this.sprite = 'images/enemy-bug.png';
 		this.x = -500 * Math.random();
 		this.y = y;
-		this.speed = 0.7 + Math.random()*(0.5);
+		this.speed = 0.9 + Math.random()*(0.5);
 		this.level = 1;
 	}  
 	
@@ -19,8 +19,8 @@ class Enemy {
     // You should multiply any movement by the dt parameter
     // which will ensure the game runs at the same speed for
     // all computers.		
-			this.x = this.x + 100 * this.speed * this.level * dt;
-		  if (this.x > 500) {
+			this.x = this.x + 101 * this.speed * this.level * dt;
+		  if (this.x > 505) {
 				allEnemies.push(new Enemy(this.y));
 				allEnemies.splice(allEnemies.indexOf(this),1);
 			}
@@ -41,7 +41,7 @@ class Player {
 	constructor() {
 		//TODO
 		this.sprite = 'images/char-boy.png';
-		this.x = 200;
+		this.x = 202;
 		this.y = 400;
 	}
 	update() {
@@ -53,16 +53,16 @@ class Player {
 	handleInput(keyCode) {
 		switch (keyCode) {
 			case "up":
-				this.y = this.y > 0 ? this.y - 82 : this.y;
+				this.y = this.y > 0 ? this.y - 83 : this.y;
 				break;
 			case "down":
-				this.y = this.y < 400 ? this.y + 82 : this.y;
+				this.y = this.y < 400 ? this.y + 83 : this.y;
 				break;
 			case "left":
-				this.x = this.x > 0 ? this.x - 100 : this.x;
+				this.x = this.x > 0 ? this.x - 101 : this.x;
 				break;
 			case "right":
-				this.x = this.x < 400 ? this.x + 100 : this.x;
+				this.x = this.x < 404 ? this.x + 101 : this.x;
 				break;				
 		}
 	}
@@ -72,7 +72,7 @@ class Player {
 // Now instantiate your objects.
 // Place all enemy objects in an array called allEnemies
 // Place the player object in a variable called player
-let allEnemies = [new Enemy(65), new Enemy(148), new Enemy(230)]; //TODO
+let allEnemies = [new Enemy(63), new Enemy(146), new Enemy(229)]; //TODO
 let player = new Player();
 
 
