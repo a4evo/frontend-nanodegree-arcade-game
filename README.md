@@ -4,6 +4,7 @@
 
 * [Gameplay](#gameplay)
 * [Dependancies](#dependencies)
+* [Run locally](#run-locally)
 * [Contributing](#contributing)
 * [Udacity description](#udacity-description)
 
@@ -14,9 +15,13 @@ When you get to the water "cells" you win and move to the next level.
 And each level cockroaches speed grow up.
 Each 5 levels you get extra life. 
 When you bump into cockroach you lose life.
-When no more lifes felt you loose and game starts from the begining.
+When no more lifes left, you loose and game starts from the begining.
 You can see left lifes and your current level on the top of the game field.
 Good luck!
+
+## Run locally
+* Download from [here](https://github.com/a4evo/frontend-nanodegree-arcade-game.git)
+* Run `index.html`.
 
 ## Dependencies
 - [GoogleFonts - Iceland](https://fonts.googleapis.com/css?family=Iceland)
