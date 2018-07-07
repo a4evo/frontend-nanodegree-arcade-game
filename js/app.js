@@ -198,7 +198,10 @@ class Player {
 // Now instantiate your objects.
 // Place all enemy objects in an array called allEnemies
 // Place the player object in a variable called player
-let allEnemies = [new Enemy(), new Enemy(), new Enemy(), new Enemy()];
+let allEnemies = [];
+for(var i = 0; i < 4; i++) {
+	allEnemies.push(new Enemy);
+}
 let player = new Player();
 
 
