@@ -39,13 +39,24 @@ class Enemy {
 // a handleInput() method.
 class Player {
 	constructor() {
-		//TODO
 		this.sprite = 'images/char-boy.png';
 		this.x = 202;
 		this.y = 400;
 	}
 	update() {
-		//TODO
+		//meeting with enemie
+		for (const enemie of allEnemies) {
+			
+			if ((enemie.x >= this.x - 50) 
+				  && (enemie.x <= this.x + 91) 
+					&& enemie.y + 5 == this.y) {
+				alert("Fail!");
+				this.x = 202;
+				this.y = 400;
+			}
+		}
+		
+		//TODO win
 	}
 	render() {
 		ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
