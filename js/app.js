@@ -5,11 +5,12 @@ class Enemy {
 
     // The image/sprite for our enemies, this uses
     // a helper we've provided to easily load images
-  constructor(y) {
+  constructor() {
+		this.rows = [63, 146, 229];
 		this.sprite = 'images/enemy-bug.png';
-		this.x = -500 * Math.random();
-		this.y = y;
-		this.speed = 0.9 + Math.random()*(0.5);
+		this.x = random(-300, -100);
+		this.y = this.rows[random(0, 2)];
+		this.speed = random(2, 3)/3;
 		this.won = false;
 	}  
 	
@@ -19,7 +20,7 @@ class Enemy {
     // You should multiply any movement by the dt parameter
     // which will ensure the game runs at the same speed for
     // all computers.		
-			this.x = this.x + 101 * this.speed * (0.75 + 0.25 * player.level) * dt;
+			this.x = this.x + 101 * this.speed * (0.85 + 0.15 * player.level) * dt;
 		  if (this.x > 505) {
 				allEnemies.push(new Enemy(this.y));
 				allEnemies.splice(allEnemies.indexOf(this),1);
@@ -122,7 +123,7 @@ class Player {
 // Now instantiate your objects.
 // Place all enemy objects in an array called allEnemies
 // Place the player object in a variable called player
-let allEnemies = [new Enemy(63), new Enemy(146), new Enemy(229)]; //TODO
+let allEnemies = [new Enemy(), new Enemy(), new Enemy(), new Enemy()]; 
 let player = new Player();
 
 
@@ -138,3 +139,9 @@ document.addEventListener('keyup', function(e) {
 
     player.handleInput(allowedKeys[e.keyCode]);
 });
+
+
+//random numbers generator
+function random(min, max) {
+	return Math.round(min + Math.random()*(max+1-min));
+}
