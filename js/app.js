@@ -11,7 +11,6 @@ class Enemy {
 		this.x = random(-300, -100);
 		this.y = this.rows[random(0, 2)];
 		this.speed = random(2, 3)/3;
-		this.won = false;
 	}  
 	
 	// Update the enemy's position, required method for game
@@ -41,23 +40,26 @@ class Enemy {
 class Player {
 	constructor() {
 		this.sprite = 'images/char-boy.png';
+		this.lifeSprite = 'images/Heart.png';
 		this.moveToStart();
 		this.level = 1;
-		this.lifes = 1;
+		this.lifes = 3;
 	}
 	update() {
-		//meeting with enemie
+		//meeting with enemie scenario
+		
 		for (const enemie of allEnemies) {
 			
 			if (		(enemie.x >= this.x - 50) 
 				  && 	(enemie.x <= this.x + 60) 
-					&& 	(enemie.y + 5 == this.y)
-				  &&	(this.lifes > 0)) {
+				  && 	(enemie.y + 5 == this.y)
+				  &&	!this.failed) {
+				this.failed = true;
 				this.fail();
 			}
 		}
 		
-		//TODO win
+		//win scenario
 		if (this.y < 0 && !this.won) {	
 			this.won = true;
 			this.win();
@@ -69,21 +71,31 @@ class Player {
 		ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 		ctx.font = '30px cursive';
   		ctx.fillText("Level " + this.level, 10, 40);
+		
+		let i = this.lifes, 
+			x = 460;
+		while(i > 0) {
+			ctx.drawImage(Resources.get(this.lifeSprite), x, 0, 101/3, 171/3);
+			x -= 35;
+			i--;
+		}
 	}
 	handleInput(keyCode) {
-		switch (keyCode) {
-			case "up":
-				this.y = this.y > 0 ? this.y - 83 : this.y;
-				break;
-			case "down":
-				this.y = this.y < 400 ? this.y + 83 : this.y;
-				break;
-			case "left":
-				this.x = this.x > 0 ? this.x - 101 : this.x;
-				break;
-			case "right":
-				this.x = this.x < 404 ? this.x + 101 : this.x;
-				break;				
+		if (!(this.failed || this.won)) {				
+			switch (keyCode) {
+				case "up":
+					this.y = this.y > 0 ? this.y - 83 : this.y;
+					break;
+				case "down":
+					this.y = this.y < 400 ? this.y + 83 : this.y;
+					break;
+				case "left":
+					this.x = this.x > 0 ? this.x - 101 : this.x;
+					break;
+				case "right":
+					this.x = this.x < 404 ? this.x + 101 : this.x;
+					break;				
+			}
 		}
 	}
 	
@@ -102,23 +114,43 @@ class Player {
 			thisPlayer.moveToStart();
 			thisPlayer.won = false;
 			thisPlayer.level ++;	
-			updateLevel(thisPlayer.level);
+			if(thisPlayer.level % 5 == 0) {
+				thisPlayer.lifes ++;
+				alert("You get one more life!")
+			} 
 		}, 500);		
 		
 	}
 	
 	fail() {
 		
-		this.lifes --;
-		setTimeout(function() {
-				alert("FAIL!!!!");					
-		}, 100);
+		
 		let thisPlayer = this;
-		setTimeout(function() {
-			thisPlayer.moveToStart();
-			thisPlayer.lifes = 1;
-			thisPlayer.level = 1;
-		}, 500);	
+		
+		if (this.lifes > 0) {
+			//loose life
+			setTimeout(function() {
+					alert("Life lost!!!!");					
+			}, 100);
+			
+			setTimeout(function() {
+				thisPlayer.lifes --;
+				thisPlayer.moveToStart();
+				thisPlayer.failed = false;
+			}, 500);	
+		} else {
+			//loose game and start again
+			setTimeout(function() {
+					alert("FAIL!!!!");					
+			}, 100);
+			
+			setTimeout(function() {
+				thisPlayer.moveToStart();
+				thisPlayer.lifes = 3;
+				thisPlayer.level = 1;
+				thisPlayer.failed = false;
+			}, 500);	
+		}
 	}
 }
 
