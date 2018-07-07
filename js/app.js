@@ -10,7 +10,7 @@ class Enemy {
 		this.x = -500 * Math.random();
 		this.y = y;
 		this.speed = 0.9 + Math.random()*(0.5);
-		this.level = 1;
+		this.won = false;
 	}  
 	
 	// Update the enemy's position, required method for game
@@ -19,7 +19,7 @@ class Enemy {
     // You should multiply any movement by the dt parameter
     // which will ensure the game runs at the same speed for
     // all computers.		
-			this.x = this.x + 101 * this.speed * this.level * dt;
+			this.x = this.x + 101 * this.speed * (0.75 + 0.25 * player.level) * dt;
 		  if (this.x > 505) {
 				allEnemies.push(new Enemy(this.y));
 				allEnemies.splice(allEnemies.indexOf(this),1);
@@ -40,23 +40,29 @@ class Enemy {
 class Player {
 	constructor() {
 		this.sprite = 'images/char-boy.png';
-		this.x = 202;
-		this.y = 400;
+		this.moveToStart();
+		this.level = 1;
+		this.lifes = 1;
 	}
 	update() {
 		//meeting with enemie
 		for (const enemie of allEnemies) {
 			
-			if ((enemie.x >= this.x - 50) 
-				  && (enemie.x <= this.x + 91) 
-					&& enemie.y + 5 == this.y) {
-				alert("Fail!");
-				this.x = 202;
-				this.y = 400;
+			if (		(enemie.x >= this.x - 50) 
+				  && 	(enemie.x <= this.x + 60) 
+					&& 	(enemie.y + 5 == this.y)
+				  &&	(this.lifes > 0)) {
+				this.fail();
 			}
 		}
 		
 		//TODO win
+		if (this.y < 0 && !this.won) {	
+			this.won = true;
+			this.win();
+					
+		}
+		
 	}
 	render() {
 		ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
@@ -76,6 +82,39 @@ class Player {
 				this.x = this.x < 404 ? this.x + 101 : this.x;
 				break;				
 		}
+	}
+	
+	moveToStart() {		
+		this.x = 202;
+		this.y = 400;
+	}
+
+	win() {		
+		setTimeout(function() {
+				alert("WIN!!!!");	
+				
+		}, 100);
+		let thisPlayer = this;
+		setTimeout(function() {
+			thisPlayer.moveToStart();
+			thisPlayer.won = false;
+			thisPlayer.level ++;				
+		}, 500);		
+		
+	}
+	
+	fail() {
+		
+		this.lifes --;
+		setTimeout(function() {
+				alert("FAIL!!!!");					
+		}, 100);
+		let thisPlayer = this;
+		setTimeout(function() {
+			thisPlayer.moveToStart();
+			thisPlayer.lifes = 1;
+			thisPlayer.level = 1;				
+		}, 500);	
 	}
 }
 
