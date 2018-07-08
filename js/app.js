@@ -124,16 +124,16 @@ class Player {
 
 		setTimeout(function () {
 			thisPlayer.message.has = true,
-				thisPlayer.message.text = "Next level!";
+			thisPlayer.message.text = "Next level!";
 		}, 0);
 
 		setTimeout(function () {
 			thisPlayer.moveToStart();
 			thisPlayer.level++;
-			if (thisPlayer.level % 5 == 0) {
+			if (thisPlayer.level % 5 === 0) {
 				thisPlayer.lifes++;
 				thisPlayer.message.has = true,
-					thisPlayer.message.text = "+ life";
+				thisPlayer.message.text = "+ life";
 			}
 		}, 0);
 
@@ -160,7 +160,7 @@ class Player {
 			//loose game and start again
 			setTimeout(function () {
 				thisPlayer.message.has = true,
-					thisPlayer.message.text = "Game Over";
+				thisPlayer.message.text = "Game Over";
 			}, 0);
 
 			setTimeout(function () {
@@ -168,7 +168,7 @@ class Player {
 				thisPlayer.lifes = 3;
 				thisPlayer.level = 1;
 				thisPlayer.message.has = true,
-					thisPlayer.message.text = "New Game";
+				thisPlayer.message.text = "New Game";
 			}, 0);
 		}
 	}
